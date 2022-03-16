@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 
-from study.models import Subject
+from study.models import Subject, Intern
 from study.tests.factories import SubjectFactory, DirectionFactory, InternFactory
 from utils.tests import TestCaseBase
 
@@ -27,8 +27,8 @@ class SubjectViewTest(TestCaseBase):
         }
         url = reverse_lazy('study:subjects_list_create')
         response = self._post(url, data)
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data['name'], data['name'])
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertTrue(Subject.objects.filter(name=data['name']).exists())
 
     def test_update(self):
         subject = SubjectFactory()
@@ -38,7 +38,7 @@ class SubjectViewTest(TestCaseBase):
         }
         url = reverse_lazy('study:subjects_manage', kwargs=dict(pk=subject.id))
         response = self._put(url, data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.data)
         updated_subject = Subject.objects.filter(id=subject.id).first()
         self.assertNotEqual(updated_subject.name, subject.name)
 
@@ -53,6 +53,17 @@ class InternViewTest(TestCaseBase):
         intern = InternFactory()
         url = reverse_lazy('study:interns_manage', kwargs=dict(pk=intern.id))
         self._test_retrive(url, intern, 'fio')
+
+    def test_create(self):
+        data = {
+            'fio': self.generate_uniq_code(),
+            'birthday_year': 2000,
+            'passport_number': '1112223344',
+        }
+        url = reverse_lazy('study:interns_list_create')
+        response = self._post(url, data)
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertTrue(Intern.objects.filter(fio=data['fio']).exists())
 
 
 class DirectionViewTest(TestCaseBase):

@@ -48,7 +48,7 @@ class InternSubjectCreateUpdateSerializer(serializers.Serializer):
 
 
 class InternCreateUpdateSerializer(serializers.ModelSerializer):
-    subjects = InternSubjectCreateUpdateSerializer(many=True, write_only=True)
+    subjects = InternSubjectCreateUpdateSerializer(many=True, write_only=True, required=False)
 
     class Meta:
         model = Intern
