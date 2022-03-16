@@ -1,4 +1,4 @@
-from study.filters import InternFilter, InternRetrieveFilter
+from study.filters import InternFilter, InternRetrieveFilter, SubjectListFilter
 from study.models import Intern, Subject, Direction
 from study.serializers import InternListSerializer, InternCreateUpdateSerializer, InternRetrieveSerializer, \
     SubjectListRetrieveSerializer, DirectionListSerializer, DirectionRetrieveSerializer, SubjectCreateUpdateSerializer, \
@@ -65,6 +65,9 @@ class SubjectViewSet(MultiSerializerViewSet):
     Тут сделал пример без комментариев. Просто быстрее
     """
     queryset = Subject.objects.all()
+    filtersets = {
+        'list': SubjectListFilter,
+    }
     serializers = {
         'list': SubjectListRetrieveSerializer,
         'retrieve': SubjectListRetrieveSerializer,

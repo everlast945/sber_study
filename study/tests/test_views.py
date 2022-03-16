@@ -47,6 +47,41 @@ class SubjectViewTest(TestCaseBase):
         url = reverse_lazy('study:subjects_manage', kwargs=dict(pk=subject.id))
         self._test_destroy(url, subject)
 
+    def test_filter_by_direction(self):
+        direction1 = DirectionFactory()  # type: Direction
+        direction2 = DirectionFactory()  # type: Direction
+
+        subjects1 = [
+            SubjectFactory(),
+            SubjectFactory(),
+            SubjectFactory(),
+        ]
+        subjects2 = [
+            SubjectFactory(),
+            SubjectFactory(),
+        ]
+
+        direction1.subjects.add(*subjects1)
+        direction2.subjects.add(*subjects2)
+
+        url = reverse_lazy('study:subjects_list_create')
+
+        response = self.client.get(url, data=dict(direction=direction1.id))
+        self.assertEqual(response.status_code, 200, response.data)
+        self.assertEqual(
+            set(item['id'] for item in response.data['results']),
+            set(subject.id for subject in subjects1),
+            'Предметы по первому направлению'
+        )
+
+        response = self.client.get(url, data=dict(direction=direction2.id))
+        self.assertEqual(response.status_code, 200, response.data)
+        self.assertEqual(
+            set(item['id'] for item in response.data['results']),
+            set(subject.id for subject in subjects2),
+            'Предметы по второму направлению'
+        )
+
 
 class InternViewTest(TestCaseBase):
     def test_list(self):
