@@ -10,3 +10,12 @@ class InternFilter(SearchFilterSet):
         fields = (
             'birthday_year',
         )
+
+
+class InternRetrieveFilter(SearchFilterSet):
+
+    @property
+    def qs(self):
+        qs = super().qs
+        qs = qs.prefetch_related('intern_subjects__subject')
+        return qs

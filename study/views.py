@@ -1,4 +1,4 @@
-from study.filters import InternFilter
+from study.filters import InternFilter, InternRetrieveFilter
 from study.models import Intern, Subject, Direction
 from study.serializers import InternListSerializer, InternCreateUpdateSerializer, InternRetrieveSerializer, \
     SubjectListRetrieveSerializer, DirectionListSerializer, DirectionRetrieveSerializer, SubjectCreateUpdateSerializer, \
@@ -8,11 +8,12 @@ from utils.views import MultiSerializerViewSet
 
 class InternViewSet(MultiSerializerViewSet):
     """
-    Тут сделал пример с комментариями. Далешь не буду их прописовать, просто лень
+    Тут сделал 1 пример с комментариями (они потом попадают в документацию)
     """
     queryset = Intern.objects.all()
     filtersets = {
         'list': InternFilter,
+        'retrieve': InternRetrieveFilter,
     }
     serializers = {
         'list': InternListSerializer,
