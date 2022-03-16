@@ -98,3 +98,14 @@ class DirectionViewTest(TestCaseBase):
         response = self._post(url, data)
         self.assertEqual(response.status_code, 201, response.data)
         self.assertTrue(Direction.objects.filter(name=data['name']).exists())
+
+    def test_update(self):
+        direction = DirectionFactory()
+        data = {
+            'name': self.generate_uniq_code(),
+        }
+        url = reverse_lazy('study:directions_manage', kwargs=dict(pk=direction.id))
+        response = self._put(url, data)
+        self.assertEqual(response.status_code, 200, response.data)
+        updated_direction = Direction.objects.filter(id=direction.id).first()  # type: Direction
+        self.assertNotEqual(updated_direction.name, direction.name)
