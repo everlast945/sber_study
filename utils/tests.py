@@ -36,3 +36,14 @@ class TestCaseBase(APITestCase):
 
     def _put(self, url, data):
         return self.client.put(url, data=json.dumps(data), content_type=self.CONTENT_TYPE_JSON)
+
+    def _test_list(self, url, object_):
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        rows = response.data['results']
+        self.assertEqual([row['id'] for row in rows if row['id'] == object_.pk], [object_.pk])
+
+    def _test_retrive(self, url, objects_, check_name):
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data[check_name], getattr(objects_, check_name))

@@ -113,7 +113,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'EXCEPTION_HANDLER': 'utils.rest_framework.custom_exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'utils.rest_framework.CustomPagination',
 }
 
 AUTH_PASSWORD_VALIDATORS = [

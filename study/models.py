@@ -15,9 +15,7 @@ class Subject(models.Model):
 
 class Intern(models.Model):
     fio = models.CharField('ФИО', max_length=250)
-    # todo: Добавить валидатор. К примеру от 1800 до текущего года
     birthday_year = models.PositiveSmallIntegerField('Год рождения')
-    # todo: Добавить валидатор. Должны быть только числа и все 10
     passport_number = models.CharField('Номер паспорта', max_length=10)
     subjects = models.ManyToManyField(
         Subject,
