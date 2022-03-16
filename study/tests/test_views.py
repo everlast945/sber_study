@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 
-from study.models import Subject, Intern
+from study.models import Subject, Intern, Direction
 from study.tests.factories import SubjectFactory, DirectionFactory, InternFactory
 from utils.tests import TestCaseBase
 
@@ -76,3 +76,12 @@ class DirectionViewTest(TestCaseBase):
         direction = DirectionFactory()
         url = reverse_lazy('study:directions_manage', kwargs=dict(pk=direction.id))
         self._test_retrive(url, direction, 'name')
+
+    def test_create(self):
+        data = {
+            'name': self.generate_uniq_code(),
+        }
+        url = reverse_lazy('study:directions_list_create')
+        response = self._post(url, data)
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertTrue(Direction.objects.filter(name=data['name']).exists())
