@@ -65,6 +65,19 @@ class InternViewTest(TestCaseBase):
         self.assertEqual(response.status_code, 201, response.data)
         self.assertTrue(Intern.objects.filter(fio=data['fio']).exists())
 
+    def test_update(self):
+        intern = InternFactory()
+        data = {
+            'fio': self.generate_uniq_code(),
+            'birthday_year': 2000,
+            'passport_number': '1112223344',
+        }
+        url = reverse_lazy('study:interns_manage', kwargs=dict(pk=intern.id))
+        response = self._put(url, data)
+        self.assertEqual(response.status_code, 200, response.data)
+        updated_intern = Intern.objects.filter(id=intern.id).first()  # type: Intern
+        self.assertNotEqual(updated_intern.fio, intern.fio)
+
 
 class DirectionViewTest(TestCaseBase):
     def test_list(self):
