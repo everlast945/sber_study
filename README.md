@@ -10,6 +10,11 @@ ALLOWED_HOSTS=*
 DATABASE_URL=psql://username:password@localhost:5432/db_name
 ```
 
+Установить зависимости:
+```
+# Лучше взять python^=3.8
+pip install -r requirements.txt
+```
 
 Выполнить миграции
 ```
