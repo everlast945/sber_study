@@ -42,6 +42,11 @@ class SubjectViewTest(TestCaseBase):
         updated_subject = Subject.objects.filter(id=subject.id).first()
         self.assertNotEqual(updated_subject.name, subject.name)
 
+    def test_destroy(self):
+        subject = SubjectFactory()
+        url = reverse_lazy('study:subjects_manage', kwargs=dict(pk=subject.id))
+        self._test_destroy(url, subject)
+
 
 class InternViewTest(TestCaseBase):
     def test_list(self):
@@ -78,6 +83,11 @@ class InternViewTest(TestCaseBase):
         updated_intern = Intern.objects.filter(id=intern.id).first()  # type: Intern
         self.assertNotEqual(updated_intern.fio, intern.fio)
 
+    def test_destroy(self):
+        intern = InternFactory()
+        url = reverse_lazy('study:interns_manage', kwargs=dict(pk=intern.id))
+        self._test_destroy(url, intern)
+
 
 class DirectionViewTest(TestCaseBase):
     def test_list(self):
@@ -109,3 +119,8 @@ class DirectionViewTest(TestCaseBase):
         self.assertEqual(response.status_code, 200, response.data)
         updated_direction = Direction.objects.filter(id=direction.id).first()  # type: Direction
         self.assertNotEqual(updated_direction.name, direction.name)
+
+    def test_destroy(self):
+        direction = DirectionFactory()
+        url = reverse_lazy('study:directions_manage', kwargs=dict(pk=direction.id))
+        self._test_destroy(url, direction)
